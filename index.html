@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .sidebar {
+            width: 260px;
+            background-color: #1a1a1a;
+            padding: 20px;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+            overflow-y: auto;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .content {
+            flex: 1;
+            margin-left: 320px;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .paragraph-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: start;
+            padding: 0 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .paragraph-container.active {
+            opacity: 1;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .separator {
+            border-top: 1px solid #333;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .social-icons a {
+            color: white;
+            font-size: 24px;
+        }
+        .sidebar-links {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+        }
+        .sidebar-links li {
+            margin-bottom: 10px;
+        }
+        .sidebar-links a {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar-links a:hover {
+            text-decoration: underline;
+        }
+        .active-link {
+            font-weight: bold;
+            color: #00aaff;
+        }
+        .intro-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 40px;
+        }
+        .intro-section h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .intro-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        .say-hi-button {
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .say-hi-button:hover {
+            background-color: #0088cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="profile-photo">
+                <img src="https://picsum.photos/100" alt="Random Profile Photo">
+            </div>
+            <h1>Test Page</h1>
+            <h2>This is a test website</h2>
+            <ul class="sidebar-links" id="sidebar-links">
+                <li><a href="#intro">Intro</a></li>
+                <script>
+                    for (let i = 1; i <= 20; i++) {
+                        document.write(`<li><a href="#paragraph${i}">Paragraph ${i}</a></li>`);
+                    }
+                </script>
+            </ul>
+            <div class="separator"></div>
+            <div class="social-icons">
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="Email"><i class="far fa-envelope"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="content" id="content">
+            <div class="paragraph-container intro-section" id="intro">
+                <h1>Dive right in</h1>
+                <p>Welcome to this captivating journey through paragraphs! Here, you'll embark on an adventure of words, exploring the depths of lorem ipsum and the heights of placeholder text. Get ready to scroll through a world of textual wonders and typographical delights.</p>
+                <button class="say-hi-button" id="sayHiButton">Say hi</button>
+            </div>
+            <script>
+                for (let i = 1; i <= 20; i++) {
+                    document.write(`
+                        <div class="paragraph-container" id="paragraph${i}">
+                            <p><strong>Paragraph ${i}:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
+    </div>
+    <script>
+        const content = document.getElementById('content');
+        const sidebarLinks = document.getElementById('sidebar-links').getElementsByTagName('a');
+        const paragraphs = document.getElementsByClassName('paragraph-container');
+        const sayHiButton = document.getElementById('sayHiButton');
+
+        function updateActiveElements() {
+            const scrollPosition = content.scrollTop;
+            const windowHeight = window.innerHeight;
+
+            for (let i = 0; i < paragraphs.length; i++) {
+                const paragraph = paragraphs[i];
+                const paragraphTop = paragraph.offsetTop;
+                const paragraphBottom = paragraphTop + paragraph.offsetHeight;
+
+                if (scrollPosition >= paragraphTop - windowHeight / 2 && 
+                    scrollPosition < paragraphBottom - windowHeight / 2) {
+                    paragraph.classList.add('active');
+                    sidebarLinks[i].classList.add('active-link');
+                } else {
+                    paragraph.classList.remove('active');
+                    sidebarLinks[i].classList.remove('active-link');
+                }
+            }
+        }
+
+        content.addEventListener('scroll', updateActiveElements);
+        updateActiveElements();
+
+        for (let i = 0; i < sidebarLinks.length; i++) {
+            sidebarLinks[i].addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        sayHiButton.addEventListener('click', function() {
+            document.getElementById('paragraph1').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
